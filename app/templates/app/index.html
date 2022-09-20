@@ -1,0 +1,170 @@
+{% extends 'app/base.html' %}
+{% load custom_tags %}
+
+
+{% block content %}
+
+<style>
+    
+    a:hover {
+        text-decoration: none;
+    }
+
+    a {
+        color: black;
+        text-decoration: none;
+        text-align: left;
+
+    }
+    .table{
+        
+        margin: 5px;
+        background-color: antiquewhite;
+    }
+</style>
+
+
+
+<div class="container mt-4">
+    <form action="" method="GET" id="filterform">
+        <div class="row">
+
+
+            <!-- states -->
+            <div class="col">
+                <div class="fromgroup">
+                    <label for="">
+                        <h5>Select State</h5>
+                    </label>
+                    <select name='state' class="form-select" id="selectstate">
+                        <option>select state</option>
+
+                        {% for state in states%}
+                        <option {% is_option_selected selected_state_id state.pk %} value="{{state.pk}}">{{state}}
+                        </option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+            </div>
+
+            <!-- cities -->
+            <div class="col">
+                <div class="form-group">
+                    <label>
+                        <h5>Select City</h5>
+                    </label>
+                    <select name='city' class="form-select" id="selectcity">
+                        <option>select city</option>
+
+                        {% for city in cities%}
+                        <option {% is_option_selected selected_city_id city.pk %} value="{{city.pk}}">{{city.name}}
+                        </option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label>
+                        <h5>Select Facility</h5>
+                    </label>
+                    <select name='facility' class="form-select" id="selectfacility">
+                        <option value="">select facility</option>
+
+                        {% for facility in facilities %}
+                        <option {% is_option_selected selected_facility_id facility.pk %} value="{{facility.pk}}">
+                            {{facility.title}}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div>
+            <a href="/" class="btn btn-outline-primary">Reset</a>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+<br>
+
+
+    <table class="table text-center table-bordered table-light ">
+        <thead>
+            <tr>
+                <th rowspan="2">Hospital</th>
+                {% for facility in facilities%}
+                <th colspan="2">{{facility.title}}</th>
+                {% endfor %}
+
+            </tr>
+            <tr>
+
+                {% for facility in facilities%}
+                <th>Total</th>
+                <th>Available</th>
+                {% endfor %}
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for hospital in hospitals %}
+            <tr>
+                <td><a href="/hospital/{{hospital.id}}">{{hospital.name}}</a></td>
+                {% get_availabilities hospital as availabilities%}
+                {% for avl in availabilities %}
+                <td>{{avl.total}}</td>
+                <td class='{%get_table_class avl.available%}'>{{avl.available}}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+
+
+
+
+<script>
+    window.onload = function () {
+
+
+
+        var selectstate = document.getElementById('selectstate')
+        var selectcity = document.getElementById("selectcity")
+        var selectfacility = document.getElementById("selectfacility")
+        var form = document.getElementById("filterform")
+
+        // var selectfacility = document.getElementById("selectfacility")
+
+
+
+
+
+        var formsubmit = function () {
+            form.submit();
+        }
+
+        selectstate.onchange = formsubmit
+        selectcity.onchange = formsubmit
+        selectfacility.onchange = formsubmit
+
+        // selectfacility.onchange = formsubmit
+
+
+    }
+</script>
+
+{% endblock %}

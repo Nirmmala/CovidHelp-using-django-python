@@ -1,0 +1,34 @@
+{% extends 'app/base.html' %}
+
+{% block content%}
+<style>
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+        text-decoration: underline;
+
+
+    }
+</style>
+<div class="container">
+    <div class="p-4 mt-4">
+        <table class="table table-bordered table-striped">
+            <h2 class="header display-4">{{hospital.name}}</h2>
+
+            <tr>
+                <td>Address</td>
+                <td>{{hospital.address}}</td>
+            </tr>
+            <tr>
+                <td>City</td>
+                <td>{{hospital.city}}</td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>{{hospital.phone}}</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+{% endblock %}
